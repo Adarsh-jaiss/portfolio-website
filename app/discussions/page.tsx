@@ -88,7 +88,7 @@ export default function DiscussionsPage(): JSX.Element {
       <ViewContainer>
         <div className="space-y-4">
           <h1 className="leading-snug text-xl font-semibold">
-            <Link href="/">Yash Sehgal</Link>
+            <Link href="/">Adarsh Jaiswal</Link>
             /Discussions
           </h1>
           <p className="text-sm text-gray-500">
