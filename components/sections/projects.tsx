@@ -18,7 +18,7 @@ const PROJECTS: {
     link: 'https://pkg.go.dev/github.com/adarsh-jaiss/mailify',
   },
   {
-    name: 'Hire Assistant - Linkedin',
+    name: 'Hire Assistant',
     description: 'A chrome extension built for HR\'s to filter out the right fit candidates from linkedin job applications, and download thier resumes in a single click.',
     label: 'Linkedin',
     link: 'https://github.com/Adarsh-jaiss/linkedin-applicant-automation',

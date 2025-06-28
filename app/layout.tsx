@@ -17,8 +17,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'Yash Sehgal',
-  description: 'Portfolio of Yash Sehgal',
+  title: 'Adarsh Jaiswal',
+  description: 'Portfolio of Adarsh Jaiswal',
 };
 
 export default function RootLayout({

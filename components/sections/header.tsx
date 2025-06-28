@@ -9,6 +9,7 @@ const SOCIALS: { name: string; link: string }[] = [
   { name: 'LinkedIn', link: 'https://linkedin.com/in/adarsh-jaiss' },
   { name: 'Substack', link: 'https://adarshjaiss.substack.com/' },
   { name: 'Mail', link: 'mailto:its.adarshjaiss@gmail.com' },
+  { name: 'Resume', link: 'https://drive.google.com/file/d/15NHlfJjXe6mSNDit1oBwuEmy1ay9DpFc/view?pli=1' },
   { name: 'Discussions', link: '/discussions' },
 ];
 
@@ -16,7 +17,7 @@ export default function Header() {
   return (
     <header className="page-header space-y-1">
       <h1 className="text-xl font-medium tracking-tight">Adarsh Jaiswal</h1>
-      <p className="text-sm text-gray-500 tracking-tight">Backend Engineer</p>
+      <p className="text-sm text-gray-500 tracking-tight">Software Engineer</p>
       <SocialsWrapper />
       <div className="!mt-8 text-sm">
         Currently working as a Software engineering intern at{' '}
