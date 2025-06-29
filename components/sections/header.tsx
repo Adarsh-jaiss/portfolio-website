@@ -9,7 +9,7 @@ const SOCIALS: { name: string; link: string }[] = [
   { name: 'LinkedIn', link: 'https://linkedin.com/in/adarsh-jaiss' },
   { name: 'Substack', link: 'https://adarshjaiss.substack.com/' },
   { name: 'Mail', link: 'mailto:its.adarshjaiss@gmail.com' },
-  { name: 'Resume', link: 'https://drive.google.com/file/d/15NHlfJjXe6mSNDit1oBwuEmy1ay9DpFc/view?pli=1' },
+  { name: 'Resume', link: 'https://drive.google.com/file/d/1enxvr2xEOCOcnoBhaPuX9OWKB2LQMbGT/view?usp=sharing' },
   { name: 'Discussions', link: '/discussions' },
 ];
 
