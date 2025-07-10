@@ -4,6 +4,7 @@ import './globals.css';
 import { GlobalContextProvider } from '@/provider/global-context-provider';
 import TanStackReactQueryProvider from '@/provider/tanstack-react-query-provider';
 import { PHProvider } from '@/provider/posthog-provider';
+import { Analytics } from "@vercel/analytics/next"
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -34,6 +35,7 @@ export default function RootLayout({
           <TanStackReactQueryProvider>
             <GlobalContextProvider>{children}</GlobalContextProvider>
           </TanStackReactQueryProvider>
+          <Analytics />
         </body>
       </PHProvider>
     </html>
