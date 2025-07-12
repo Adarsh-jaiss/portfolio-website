@@ -19,54 +19,104 @@ export default function PostGooglePatents() {
         </WritingHeader>
         <WritingContent>
           <p>
-            recently, i was helping a friend search for technical patterns on
-            google patents — and wow, was it tedious. every search gave us a
-            wall of results, and each abstract had to be opened manually to even
-            check if it was remotely relevant. after hours of scrolling and
-            clicking, we had maybe 2 or 3 useful patents. not great.
+            recently, i was helping a friend look for relevant patent data on
+            google patents — and i quickly realized just how slow and repetitive
+            the process really was. for every keyword search, we had to manually
+            open each result and scan the abstract just to figure out if it was
+            even worth saving. after hours of digging, we walked away with maybe
+            two or three useful ones.
           </p>
+
           <p>
-            so i started looking into ways to automate the process. my first
-            attempt was with firecrawl — decent results, but it turned out to be
-            too expensive for the volume i needed.
+            i figured there had to be a better way. so i first tried using
+            <strong> firecrawl </strong> to scrape patent pages — and while it
+            technically worked, it wasn’t sustainable cost-wise, especially with
+            the number of pages i needed to process.
           </p>
+
           <p>
-            that’s when i got curious about how google patents actually fetches
-            its data. after a bit of network inspection, i realized: when you
-            search, the results are fetched via a `xhr/query` endpoint. and when
-            you click on a result, the abstract is buried in raw html, not in
-            any clean API format.
+            so i decided to take a closer look at how google patents actually
+            loads its data. i opened devtools and noticed something interesting:
+            instead of server-rendering results, google uses an <code>xhr/query</code>{' '}
+            endpoint behind the scenes. that endpoint takes a structured query
+            and returns paginated patent result metadata in a JSON-like format.
           </p>
+
           <p>
-            so, i wrote a scraper that:
-            <ul className="list-disc ml-6">
-              <li>hits the query endpoint with custom search params</li>
-              <li>uses the publication id to fetch each result’s HTML</li>
-              <li>extracts just the title, abstract, and URL</li>
-            </ul>
-            the result? clean data.
+            for example, it builds a URL like:
+            <pre className="bg-muted p-2 my-2 rounded text-sm overflow-x-auto">
+              https://patents.google.com/xhr/query?url=q%3D%28CD47%29%26oq%3DCD47&amp;exp=&amp;peid=...
+            </pre>
+            each response includes around 10 items per page, and each item
+            contains a unique patent ID (like <code>patent/US11723348B2/en</code>) that you
+            can use to fetch the full detail page.
           </p>
+
           <p>
-            i then passed these abstracts into openai’s api with a focused
-            prompt that analyzed the relevance. this made the search smarter and
-            faster — but of course, there was pagination to deal with.
+            here's the tricky part: clicking a result doesn’t return a clean
+            JSON object — it serves a full HTML document. so to extract the
+            abstract, i had to write a scraper that:
           </p>
+
+          <ul className="list-disc ml-6">
+            <li>
+              hits the <code>/xhr/query</code> endpoint with a given search
+              query
+            </li>
+            <li>
+              parses the response to extract patent publication IDs and their
+              respective detail URLs
+            </li>
+            <li>
+              fetches the full HTML for each patent page and scrapes the
+              <code>abstract</code>, <code>title</code>, and original URL using
+              selector logic
+            </li>
+          </ul>
+
           <p>
-            the query api only returns 10 results per page, so i wrote a loop
-            that auto-increments the page number and pulls abstracts until all
-            results are collected. then, to avoid token limits, i chunked the
-            abstracts into smaller batches before sending them to the model.
+            once i had a collection of titles and abstracts, i passed them into
+            the <strong>OpenAI API</strong> with a carefully written custom
+            prompt. the prompt helped evaluate whether the abstract was
+            topically relevant, and gave each one a score or summary.
           </p>
+
           <p>
-            finally, i wrapped all of it into a simple internal API: you give it
-            a query and a custom prompt, it returns the top recommended patents
-            — filtered and summarized. it now takes seconds to get relevant
-            insights that used to take hours.
+            of course, there was another obstacle: <strong>pagination</strong>.
+            the query API only returns 10 results per page, and doesn’t give you
+            a direct “next” link — but it does return the total count of results
+            on the first page. i used that to calculate how many pages i needed,
+            and wrote a loop that updated the <code>page</code> parameter to
+            scrape all results.
           </p>
+
           <p>
-            sometimes, all it takes is a bit of digging to turn a painful
-            workflow into something smooth and powerful. i’ll probably open
-            source this soon — let me know if you’d be interested!
+            with dozens (sometimes hundreds) of abstracts collected, i started
+            hitting token limits on OpenAI. so, i batched the abstracts into
+            smaller chunks before sending them to the model.
+          </p>
+
+          <p>
+            in the end, i wrapped the whole flow in a simple internal API that
+            takes:
+          </p>
+
+          <ul className="list-disc ml-6">
+            <li>a search query (e.g., "CD47")</li>
+            <li>a custom relevance prompt</li>
+          </ul>
+
+          <p>
+            and returns a cleaned list of patent entries — each with title,
+            abstract, and URL — filtered by relevance. now, instead of manually
+            reviewing 50 tabs, i get distilled insights in seconds.
+          </p>
+
+          <p>
+            this project went from a frustrating search problem to an enjoyable
+            automation exercise. it’s still internal right now, but i’m planning
+            to open source it soon. if you’d like to try it or contribute, let
+            me know!
           </p>
         </WritingContent>
       </WritingContainer>
